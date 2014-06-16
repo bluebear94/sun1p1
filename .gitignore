@@ -1,0 +1,47 @@
+# Created by http://www.gitignore.io
+
+### Linux ###
+*~
+
+# KDE directory preferences
+.directory
+
+
+#!! ERROR:  is undefined. Use list command to see defined gitignore types !!#
+
+### C ###
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Libraries
+*.lib
+*.a
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# The executable
+
+sun1p1
+
+# ncurses stuff
+
+ncurses*
+
+# Save directories
+
+saves/
