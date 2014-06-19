@@ -30,16 +30,15 @@ void drawOptions(char** options, uint8_t nOptions, int y, int x) {
   attroff(COLOR_PAIR(34));
 }
 
-uint8_t menu(char** options, uint8_t nOptions, uint8_t paneSize, int y, int x) {
+uint8_t menu(char** options, uint8_t nOptions, uint8_t paneSize, int y, int x, int i) {
   drawOptions(options, paneSize, y, x);
-  int i = 0;
   int k = 0;
-  int shift = 0;
-  drawCursor(i, y, x, '>');
+  int shift = min(i, nOptions - paneSize);
+  attron(COLOR_PAIR(35));
+  drawCursor(i - shift, y, x, '>');
   while (k != 10) {
     refresh();
     k = getch();
-    attron(COLOR_PAIR(35));
     drawCursor(i - shift, y, x, ' ');
     if (k == KEY_UP) {
       --i;

@@ -146,5 +146,7 @@ typedef struct {
 
 char spellMenuArray[1024][32];
 char* spellMenu[1024];
+char invMenuArray[64][64];
+char* invMenu[64];
 
 #endif

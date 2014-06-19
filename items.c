@@ -17,12 +17,46 @@
 
 */
 
+void dispInvMenu(EContext context, Stack stack, int allowEquips) {
+  extern char* invMenu[64];
+  int pick;
+  Entity* player = *context;
+  loadInvMenu(player);
+  do {
+    pick = menu(invMenu, 64, 32, 1, 1, pick);
+    uint16_t qty = player->moreData.playerData.items[pick].qty;
+    if (qty) {
+      uint16_t id = player->moreData.playerData.items[pick].id;
+      if (id < 0x3000) consumeItem(id, pick, stack, context);
+      else if (allowEquips && (id & 0x4000)) equipItem(id, pick, stack, context);
+    }
+  } while (pick);
+}
+
+void updateMenuEntry(Entity* player, int slot, int id, int qty) {
+  extern Item items[0x8000];
+  extern char* invMenu[64];
+  extern char invMenuArray[64][64];
+  if (qty) sprintf(invMenuArray[slot], (id & 0x4000) ? "%s" : "%s (%d)", items[id].name, qty);
+}
+
+void loadInvMenu(Entity* player) {
+  extern char* invMenu[64];
+  extern char invMenuArray[64][64];
+  *invMenu = "Back";
+  int i;
+  for (i = 1; i < 64; ++i) {
+    invMenu[i] = invMenuArray + i;
+    updateMenuEntry(player, i, player->moreData.playerData.items[i].id, player->moreData.playerData.items[i].qty);
+  }
+}
+
 void consumeItem(uint16_t id, uint8_t slot, Stack stack, EContext context) {
   extern Item items[0x8000];
   Item* item = items + id;
   slpRun(item->data.consumableInstructions, stack, context, 1);
   (*context)->moreData.playerData.currWt -= item->weight;
-  --(*context)->moreData.playerData.items[slot].qty; // Yay C!!!
+  updateMenuEntry(*context, slot, id, --(*context)->moreData.playerData.items[slot].qty); // Yay C!!!
 }
 
 void equipItem(uint16_t id, uint8_t slot, Stack stack, EContext context) {
@@ -45,6 +79,7 @@ void equipItem(uint16_t id, uint8_t slot, Stack stack, EContext context) {
   uint16_t t = *oldId;
   *oldId = (*context)->moreData.playerData.items[slot].id;
   (*context)->moreData.playerData.items[slot].id = t;
+  updateMenuEntry(*context, slot, id, 1);
 }
 
 void loadItemTable() {

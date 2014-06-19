@@ -57,7 +57,7 @@ int main(void) {
   getch();
   free(c);
   free(tt);
-  menu(testMenu, 8, 4, 40, 1);
+  menu(testMenu, 8, 4, 40, 1, 0);
   printw("Nothing here!\n");
   mkdir("saves", 0777);
   refresh();

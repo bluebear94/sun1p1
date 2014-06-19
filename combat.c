@@ -65,11 +65,11 @@ void createSpellMenu(Entity* player) {
 }
 
 int selectSpellFromRank(int rank) {
-  return menu(spellMenu + (rank << 5), 32, 8, 40, 1) + (rank << 5);
+  return menu(spellMenu + (rank << 5), 32, 8, 40, 1, 0) + (rank << 5);
 }
 
 int selectSpellRaw() {
-  return selectSpellFromRank(menu(spellMenuByRank, 32, 8, 40, 1));
+  return selectSpellFromRank(menu(spellMenuByRank, 32, 8, 40, 1, 0));
 }
 
 int selectSpell(Entity* player) {
