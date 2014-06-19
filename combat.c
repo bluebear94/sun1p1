@@ -13,7 +13,7 @@ const char* battleMenu[4] = {
   "Flee"
 };
 
-const char* spellMenuByRank[32] = {
+const char* spellMenuByRank[33] = {
   "Rank 1",
   "Rank 2",
   "Rank 3",
@@ -45,7 +45,8 @@ const char* spellMenuByRank[32] = {
   "Rank 29",
   "Rank 30",
   "Rank 31",
-  "Rank 32"
+  "Rank 32",
+  "Back"
 };
 
 int isSpellKnown(uint64_t* spellsKnown, uint16_t id) {
@@ -69,7 +70,8 @@ int selectSpellFromRank(int rank) {
 }
 
 int selectSpellRaw() {
-  return selectSpellFromRank(menu(spellMenuByRank, 32, 8, 40, 1, 0));
+  int rank = menu(spellMenuByRank, 33, 8, 40, 1, 0);
+  return (rank != 32) ? selectSpellFromRank(rank) : -1;
 }
 
 int selectSpell(Entity* player) {
@@ -77,7 +79,7 @@ int selectSpell(Entity* player) {
   extern SpellTable spells;
   do {
     spellId = selectSpellRaw();
-  } while (!(isSpellKnown(player->eh.spellsKnown, spellId) && player->eh.currMagic >= spells[spellId].mCost));
+  } while (spellId != -1 && !(isSpellKnown(player->eh.spellsKnown, spellId) && player->eh.currMagic >= spells[spellId].mCost));
   return spellId;
 }
 

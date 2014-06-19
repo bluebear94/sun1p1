@@ -17,19 +17,24 @@
 
 */
 
+int dispInvMenuOnce(EContext context, Stack stack, int allowEquips, int pick) {
+  pick = menu(invMenu, 64, 32, 1, 1, pick);
+  uint16_t qty = player->moreData.playerData.items[--pick].qty;
+  if (pick != -1 && qty) {
+    uint16_t id = player->moreData.playerData.items[pick].id;
+    if (id < 0x3000) consumeItem(id, pick, stack, context);
+    else if (allowEquips && (id & 0x4000)) equipItem(id, pick, stack, context);
+  }
+  return pick + 1;
+}
+
 void dispInvMenu(EContext context, Stack stack, int allowEquips) {
   extern char* invMenu[64];
   int pick;
   Entity* player = *context;
   loadInvMenu(player);
   do {
-    pick = menu(invMenu, 64, 32, 1, 1, pick);
-    uint16_t qty = player->moreData.playerData.items[pick].qty;
-    if (qty) {
-      uint16_t id = player->moreData.playerData.items[pick].id;
-      if (id < 0x3000) consumeItem(id, pick, stack, context);
-      else if (allowEquips && (id & 0x4000)) equipItem(id, pick, stack, context);
-    }
+    pick = dispInvMenuOnce(context, stack, 1, pick);
   } while (pick);
 }
 
