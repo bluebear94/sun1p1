@@ -23,12 +23,20 @@ w     : MP heal
 
 */
 
+void renderInflictedDamage(char* s, int isPlayer, int col) {
+  move(23, 96 - (isPlayer << 6));
+  attron(COLOR_PAIR(col));
+  printw(s);
+  attroff(COLOR_PAIR(col));
+}
+
 void damage(EntityHeader* opp, int64_t amount) {
   opp->currHealth = min(opp->maxHealth, \
     opp->currHealth - amount);
 }
 
 void slpRun(Spell spell, Stack* stack, EContext context, int playerIsAttacking) {
+  char buff[32];
   for (; *spell; ++spell) {
     char in = *spell;
     switch (in) {
@@ -137,20 +145,34 @@ void slpRun(Spell spell, Stack* stack, EContext context, int playerIsAttacking) 
             char d = in - 'q';
             int64_t dmg = pop(stack);
             EntityHeader* opp = (EntityHeader*)(context + 1);
-            if (in != 'u')
-              damage(opp, (dmg * opp->elemAmp[d]) >> 8);
-            else
-              opp->poisonAmount += (dmg * opp->elemAmp[2]) >> 8;
+            if (in != 'u') {
+              int64_t amt = (dmg * opp->elemAmp[d]) >> 8;
+              damage(opp, amt);
+              sprintf(buff, "-%lli", amt);
+              renderInflictedDamage(buff, playerIsAttacking, 1);
+            }
+            else {
+              int64_t amt = (dmg * opp->elemAmp[2]) >> 8;
+              opp->poisonAmount += amt;
+              sprintf(buff, "psn %lli", amt);
+              renderInflictedDamage(buff, playerIsAttacking, 2);
+            }
           }
           else if (in == 'v' || in == 'w') {
             int64_t heal = pop(stack);
             EntityHeader* pl = (EntityHeader*) context;
-            if (in == 'v')
+            if (in == 'v') {
+              sprintf(buff, "+%lli", heal);
               pl->currHealth = min(pl->maxHealth, \
                 pl->currHealth + heal);
-            else
+              renderInflictedDamage(buff, playerIsAttacking, 5);
+            }
+            else {
+              sprintf(buff, "m+%lli", heal);
               pl->currMagic = min(pl->maxMagic, \
                 pl->currMagic + heal);
+              renderInflictedDamage(buff, playerIsAttacking, 6);
+            }
           }
         }
     }
@@ -177,6 +199,7 @@ void loadSpellTable() {
       case 'n':
         strncpy(spells[cs].name, buffer + 1, 59);
         spells[cs].name[59] = 0;
+        break;
       case ' ':
         strncpy(spells[cs].inst, buffer + 1, 118);
         spells[cs].inst[118] = 0;

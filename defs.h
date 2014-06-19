@@ -25,8 +25,6 @@
        __typeof__ (b) _b = (b); \
      _a < _b ? _a : _b; })
 
-
-
 typedef int64_t Health;
 typedef Health Magic;
 typedef Magic Gold;
@@ -84,7 +82,7 @@ typedef struct {
   char         isPlayer;
 } Entity;                // 1024 bytes
 
-typedef Entity *EContext[2];
+typedef Entity *EContext[2]; // attacker, THEN defender
 
 Entity player;
 
@@ -131,6 +129,8 @@ typedef struct {
     char consumableInstructions[32];
   } data;
 } Item;
+
+Item items[0x8000];
 
 typedef struct {
   char     repr[8][16];

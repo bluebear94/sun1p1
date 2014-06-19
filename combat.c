@@ -5,7 +5,6 @@
 #include <time.h>
 #include <math.h>
 #include "defs.h"
-#include "blocks.h"
 
 const char* battleMenu[4] = {
   "Attack",
