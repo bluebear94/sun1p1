@@ -1,9 +1,11 @@
-#include <inttypes.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
-#include "defs.h"
+#include "stackops.h"
 
+#include <inttypes.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "defs.h"
 // i luv expression chaining
 
 void push(Stack* stack, int64_t value) {

@@ -1,10 +1,16 @@
 #include <inttypes.h>
-#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+
 #include <ncurses.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
 #include "defs.h"
+#include "gen.h"
 #include "menu.h"
+#include "renderer.h"
 
 int main(void) {
   printf("starting...\n");
@@ -14,7 +20,9 @@ int main(void) {
   int y, x;
   getmaxyx(stdscr, y, x);
   if (y < MIN_HEIGHT || x < MIN_WIDTH) {
-    printAndRefresh("Required: %d by %d; found: %d by %d.\nAborting...\n", MIN_WIDTH, MIN_HEIGHT, x, y);
+    printAndRefresh(
+        "Required: %d by %d; found: %d by %d.\nAborting...\n", MIN_WIDTH,
+        MIN_HEIGHT, x, y);
     getch();
     echo();
     endwin();
@@ -24,9 +32,10 @@ int main(void) {
   }
   noecho();
   keypad(stdscr, 1);
-  //halfdelay(1);
+  // halfdelay(1);
   if (!has_colors()) {
-    printAndRefresh("What are you doing with a terminal that doesn't support color?!\n");
+    printAndRefresh(
+        "What are you doing with a terminal that doesn't support color?!\n");
     getch();
     echo();
     endwin();
@@ -37,8 +46,7 @@ int main(void) {
   start_color();
   int i, j;
   for (i = 0; i < 8; ++i)
-    for (j = 0; j < 8; ++j)
-      init_pair((i << 3) + j, j, i);
+    for (j = 0; j < 8; ++j) init_pair((i << 3) + j, j, i);
   printAndRefresh("All systems go.\n");
   getch();
   clear();

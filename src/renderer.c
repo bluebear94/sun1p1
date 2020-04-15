@@ -1,7 +1,11 @@
-#include <ncurses.h>
+#include "renderer.h"
+
 #include <inttypes.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+
+#include <ncurses.h>
+
 #include "defs.h"
 
 void renderChunk(Chunk* chunk, TTPointer tt) {
@@ -15,7 +19,8 @@ void renderChunk(Chunk* chunk, TTPointer tt) {
         attron(COLOR_PAIR(t.color));
         addch(t.repr);
         attroff(COLOR_PAIR(t.color));
-      } else addch(' ');
+      } else
+        addch(' ');
     }
     move(34, 64);
     attron(COLOR_PAIR(7));
@@ -40,7 +45,9 @@ void renderPlayerStats(Entity* player) {
   attroff(COLOR_PAIR(6));
   attron(COLOR_PAIR(2));
   move(36, 2);
-  printw("XP %d/%d ", player->moreData.playerData.xp, player->moreData.playerData.nx);
+  printw(
+      "XP %d/%d ", player->moreData.playerData.xp,
+      player->moreData.playerData.nx);
   attroff(COLOR_PAIR(2));
 }
 
@@ -70,27 +77,28 @@ void loadTextures(TTPointer tt) {
   fclose(is);
 }
 
-void saveChunk(Chunk* chunk, char* saveName) {
+void saveChunk(Chunk* chunk, const char* saveName) {
   char buff[64] = "saves/";
-  sprintf(buff + 6, "%s/chunks/%d.%d.bin", saveName, chunk->x, chunk->y);
+  snprintf(buff + 6, 64, "%s/chunks/%d.%d.bin", saveName, chunk->x, chunk->y);
   FILE* f = fopen(buff, "wb");
   fwrite(chunk, sizeof(Chunk), 1, f);
   fclose(f);
 }
 
-void loadChunk(Chunk* chunk, char* saveName, int32_t x, int32_t y) {
+void loadChunk(Chunk* chunk, const char* saveName, int32_t x, int32_t y) {
   char buff[64] = "saves/";
-  sprintf(buff + 6, "%s/chunks/%d.%d.bin", saveName, x, y);
+  snprintf(buff + 6, 64, "%s/chunks/%d.%d.bin", saveName, x, y);
   FILE* f = fopen(buff, "rb");
   fread(chunk, sizeof(Chunk), 1, f);
   fclose(f);
 }
 
-void switchChunk(Chunk* c, int32_t x, int32_t y, char* saveName, Entity* player, TTPointer(tt)) {
+void switchChunk(
+    Chunk* c, int32_t x, int32_t y, const char* saveName, Entity* player,
+    TTPointer(tt)) {
   saveChunk(c, saveName);
   loadChunk(c, saveName, x, y);
   clear();
   renderChunk(c, tt);
   renderPlayerStats(player);
 }
-

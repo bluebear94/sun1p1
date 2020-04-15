@@ -1,10 +1,15 @@
+#include "slp.h"
+
 #include <inttypes.h>
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <ncurses.h>
+
 #include "defs.h"
+#include "stackops.h"
 
 /*
 
@@ -135,35 +140,35 @@ void slpRun(
     }
     default: {
       if (in >= 'a' && in <= 'h') {
-        char d = in - 'a';
+        int d = in - 'a';
         push(stack, context[d & 4]->eh.attrs[d & 3]);
       } else if (in >= 'i' && in <= 'p') {
-        char d = in - 'i';
+        int d = in - 'i';
         push(stack, ((uint64_t*) context[d & 4])[d & 3]);
       } else if (in >= 'q' && in <= 'u') {
-        char d = in - 'q';
+        int d = in - 'q';
         int64_t dmg = pop(stack);
         EntityHeader* opp = (EntityHeader*) (context + 1);
         if (in != 'u') {
           int64_t amt = (dmg * opp->elemAmp[d]) >> 8;
           damage(opp, amt);
-          sprintf(buff, "-%lli", amt);
+          sprintf(buff, "-%" PRId64, amt);
           renderInflictedDamage(buff, playerIsAttacking, 1);
         } else {
           int64_t amt = (dmg * opp->elemAmp[2]) >> 8;
           opp->poisonAmount += amt;
-          sprintf(buff, "psn %lli", amt);
+          sprintf(buff, "psn %" PRId64, amt);
           renderInflictedDamage(buff, playerIsAttacking, 2);
         }
       } else if (in == 'v' || in == 'w') {
         int64_t heal = pop(stack);
         EntityHeader* pl = (EntityHeader*) context;
         if (in == 'v') {
-          sprintf(buff, "+%lli", heal);
+          sprintf(buff, "+%" PRId64, heal);
           pl->currHealth = min(pl->maxHealth, pl->currHealth + heal);
           renderInflictedDamage(buff, playerIsAttacking, 5);
         } else {
-          sprintf(buff, "m+%lli", heal);
+          sprintf(buff, "m+%" PRId64, heal);
           pl->currMagic = min(pl->maxMagic, pl->currMagic + heal);
           renderInflictedDamage(buff, playerIsAttacking, 6);
         }
