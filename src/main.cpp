@@ -53,8 +53,8 @@ int main(void) {
   srand(time(NULL));
   printAndRefresh("Allocating memory...\n");
   refresh();
-  Chunk* c = malloc(16384);
-  TTPointer tt = malloc(sizeof(TextureTable));
+  Chunk* c = (Chunk*) malloc(sizeof(Chunk));
+  TTPointer tt = (TTPointer) malloc(sizeof(TextureTable));
   printAndRefresh("Loading textures...\n");
   loadTextures(tt);
   printAndRefresh("Generating terrain...\n");

@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <algorithm>
+
 #include <ncurses.h>
 
 #include "defs.h"
@@ -38,7 +40,7 @@ void renderInflictedDamage(char* s, int isPlayer, int col) {
 }
 
 void damage(EntityHeader* opp, int64_t amount) {
-  opp->currHealth = min(opp->maxHealth, opp->currHealth - amount);
+  opp->currHealth = std::min(opp->maxHealth, opp->currHealth - amount);
 }
 
 void slpRun(
@@ -165,11 +167,11 @@ void slpRun(
         EntityHeader* pl = (EntityHeader*) context;
         if (in == 'v') {
           sprintf(buff, "+%" PRId64, heal);
-          pl->currHealth = min(pl->maxHealth, pl->currHealth + heal);
+          pl->currHealth = std::min(pl->maxHealth, pl->currHealth + heal);
           renderInflictedDamage(buff, playerIsAttacking, 5);
         } else {
           sprintf(buff, "m+%" PRId64, heal);
-          pl->currMagic = min(pl->maxMagic, pl->currMagic + heal);
+          pl->currMagic = std::min(pl->maxMagic, pl->currMagic + heal);
           renderInflictedDamage(buff, playerIsAttacking, 6);
         }
       }

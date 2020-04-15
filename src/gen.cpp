@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <algorithm>
+
 #include <ncurses.h>
 
 #include "blocks.h"
@@ -66,6 +68,6 @@ void genChunk(Chunk* c, int32_t rx, int32_t ry, uint64_t seed) {
   c->x = rx;
   c->y = ry;
   c->difficulty =
-      max(1, sqrt((rx * rx + ry * ry + (rand() & 8) - 4) / 8.0 + 1));
+      std::max(1, (int) sqrt((rx * rx + ry * ry + (rand() & 8) - 4) / 8.0 + 1));
   srand(time(NULL));
 }

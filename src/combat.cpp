@@ -100,7 +100,7 @@ void createMob(Entity* mob, uint16_t difficulty, uint16_t id) {
   }
   *(++s) = 0;
   fname[31] = 0;
-  MobDNA* md = malloc(sizeof(MobDNA));
+  MobDNA* md = (MobDNA*) malloc(sizeof(MobDNA));
   FILE* f = fopen(fname, "r");
   while (!feof(f)) {
     fgets(buffer, 256, f);

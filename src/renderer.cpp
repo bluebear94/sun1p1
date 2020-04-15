@@ -72,7 +72,7 @@ void loadTextures(TTPointer tt) {
   while (!feof(is)) {
     fscanf(is, "%d: %d %d %c\n", &tn, &bg, &fg, &ch);
     printAndRefresh("%d: %d %d %c\n", tn, bg, fg, ch);
-    tt[tn] = (Texture){ch, (bg << 3) + fg};
+    tt[tn] = {.repr = ch, .color = (char) ((bg << 3) + fg)};
   }
   fclose(is);
 }

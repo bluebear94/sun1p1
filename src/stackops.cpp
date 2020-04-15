@@ -23,7 +23,7 @@ void initStack(Stack* stack) {
   memset(stack, 0, sizeof(Stack));
 }
 Stack* allocStack() {
-  Stack* s = malloc(sizeof(Stack));
+  Stack* s = (Stack*) malloc(sizeof(Stack));
   initStack(s);
   return s;
 }

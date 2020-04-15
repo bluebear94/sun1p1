@@ -18,19 +18,6 @@
 #  define printAndRefresh(...)
 #endif
 
-#define max(a, b) \
-  ({ \
-    __typeof__(a) _a = (a); \
-    __typeof__(b) _b = (b); \
-    _a > _b ? _a : _b; \
-  })
-#define min(a, b) \
-  ({ \
-    __typeof__(a) _a = (a); \
-    __typeof__(b) _b = (b); \
-    _a < _b ? _a : _b; \
-  })
-
 typedef int64_t Health;
 typedef Health Magic;
 typedef Magic Gold;
@@ -90,7 +77,7 @@ typedef struct Entity {
 
 typedef Entity* EContext[2]; // attacker, THEN defender
 
-Entity player;
+inline Entity player;
 
 typedef struct STEntry {
   int64_t mCost;
@@ -100,7 +87,7 @@ typedef struct STEntry {
 } STEntry;
 typedef STEntry SpellTable[1024];
 
-SpellTable spells;
+inline SpellTable spells;
 
 #define NUM_TEXTURES 1024
 #define cForeground(color) (color & 7)
@@ -136,7 +123,7 @@ typedef struct Item {
   } data;
 } Item;
 
-Item items[0x8000];
+inline Item items[0x8000];
 
 typedef struct MobDNA {
   char repr[8][16];
@@ -150,9 +137,9 @@ typedef struct MobDNA {
   char pad[18];
 } MobDNA;
 
-char spellMenuArray[1024][32];
-const char* spellMenu[1024];
-char invMenuArray[64][64];
-const char* invMenu[64];
+inline char spellMenuArray[1024][32];
+inline const char* spellMenu[1024];
+inline char invMenuArray[64][64];
+inline const char* invMenu[64];
 
 #endif

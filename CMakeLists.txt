@@ -43,15 +43,15 @@ FIND_PACKAGE(Curses REQUIRED)
 INCLUDE_DIRECTORIES(include/)
 
 SET(SOURCES
-  src/combat.c
-  src/defs.c
-  src/gen.c
-  src/items.c
-  src/main.c
-  src/menu.c
-  src/renderer.c
-  src/slp.c
-  src/stackops.c
+  src/combat.cpp
+  src/defs.cpp
+  src/gen.cpp
+  src/items.cpp
+  src/main.cpp
+  src/menu.cpp
+  src/renderer.cpp
+  src/slp.cpp
+  src/stackops.cpp
 )
 
 # TODO: add -Werror when we get rid of all the warnings
@@ -62,7 +62,7 @@ SET(CMAKE_C_FLAGS
   #" -fno-exceptions -fno-rtti"
   )
 SET(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} --std=c++20 -Wall -Wextra -pedantic"
+  "${CMAKE_CXX_FLAGS} --std=c++2a -Wall -Wextra -pedantic"
   #" -fno-exceptions -fno-rtti"
   )
 TARGET_LINK_LIBRARIES(sun1p1

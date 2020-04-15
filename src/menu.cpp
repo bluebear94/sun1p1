@@ -7,6 +7,8 @@
 #include <string.h>
 #include <time.h>
 
+#include <algorithm>
+
 #include <ncurses.h>
 
 #include "blocks.h"
@@ -42,7 +44,7 @@ uint8_t menu(
     int x, int i) {
   drawOptions(options, paneSize, y, x);
   int k = 0;
-  int shift = min(i, nOptions - paneSize);
+  int shift = std::min(i, nOptions - paneSize);
   attron(COLOR_PAIR(35));
   drawCursor(i - shift, y, x, '>');
   while (k != 10) {
