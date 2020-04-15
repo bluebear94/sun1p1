@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.pl6": "Perl 6 FE",
+    "*.dict": "plaintext",
+    "inttypes.h": "c"
+  }
+}

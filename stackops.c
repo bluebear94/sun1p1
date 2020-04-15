@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include "defs.h"
 
 // i luv expression chaining
